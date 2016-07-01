@@ -30,7 +30,7 @@ public class Database {
 	
 	public static void DownloadNew()
 	{
-		containments.clear();
+		containments = new ArrayList<>();
 		containments = Config.getTags();
 	}
 	
@@ -40,9 +40,9 @@ public class Database {
 			return;
 		for(Tag tag : containments)
 		{
-			containments.remove(tag);
+//			containments.remove(tag);
 			tag.Upload();
-			containments.add(tag);
+//			containments.add(tag);
 		}
 	}
 	
@@ -56,10 +56,17 @@ public class Database {
 		containments.remove(tag);
 	}
 	
-	public static void update(Tag tag)
+	public static void updateDownload(Tag tag)
 	{
 		containments.remove(tag);
 		tag.Downlaod();
+		containments.add(tag);
+	}
+	
+	public static void updateUpload(Tag tag, List<String> modifiers)
+	{
+		containments.remove(tag);
+		tag.Upload(modifiers);
 		containments.add(tag);
 	}
 	
@@ -74,6 +81,7 @@ public class Database {
 		}
 		return false;
 	}
+	
 	public static Cuboid getCore(Player p)
 	{
 		for(Tag tag : containments)
@@ -85,6 +93,19 @@ public class Database {
 		}
 		return null;
 	}
+	
+	public static List<String> getCoreModifiers(Player p)
+	{
+		for(Tag tag : containments)
+		{
+			List<String> modifiers = tag.DownlaodData();
+			if(Modifier.contains(modifiers, "Player", p.getName()))
+				if(Modifier.contains(modifiers, "display_name", "core"))
+					return modifiers;
+		}
+		return null;
+	}
+	
 	public static boolean isCore(Block block)
 	{
 		for(Tag tag : containments)

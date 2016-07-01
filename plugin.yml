@@ -10,3 +10,6 @@ commands:
   base:
     description: Used to Sync the Database with Config!
     aliases: b
+  upgrade:
+    description: Give command for Upgrade Part!
+    aliases: u

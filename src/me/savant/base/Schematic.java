@@ -4,14 +4,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map;
+
 import me.savant.jnbt.ByteArrayTag;
 import me.savant.jnbt.CompoundTag;
 import me.savant.jnbt.NBTInputStream;
 import me.savant.jnbt.ShortTag;
 import me.savant.jnbt.Tag;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -22,13 +25,15 @@ public class Schematic {
 	private short width;
 	private short length;
 	private short height;
-
-	public Schematic(short[] blocks, byte[] data, short width, short length, short height) {
+	private String name;
+	
+	public Schematic(short[] blocks, byte[] data, short width, short length, short height, String name) {
 		this.blocks = blocks;
 		this.data = data;
 		this.width = width;
 		this.length = length;
 		this.height = height;
+		this.name = name;
 	}
 
 	/**
@@ -64,6 +69,14 @@ public class Schematic {
 	 */
 	public short getHeight() {
 		return height;
+	}
+	
+	/**
+	 * @return the name
+	 */
+	public String getName()
+	{
+		return name;
 	}
 	
 	/**
@@ -112,7 +125,8 @@ public class Schematic {
 	 * @return Time Operation Took
 	 */
 	public static long pasteSchematic(final World world, final Location loc, Schematic schematic, final Player p) {
-		final int i = 5;
+		loc.getBlock().setType(Material.AIR);
+		final int i = 2;
 		final short[] blocks = schematic.getBlocks();
 		final byte[] blockData = schematic.getData();
 
@@ -129,18 +143,24 @@ public class Schematic {
 				for (int z = 0; z < length; z++) 
 				{
 					final int fZ = z;
-							//Bukkit.getScheduler().scheduleSyncDelayedTask(Bukkit.getPluginManager().getPlugin("AdvancedBase"),new Runnable(){
-							//	@SuppressWarnings("deprecation")
-							//	public void run(){
-							//		int index = fY * width * length + fZ * width + fX;
-							//		Block block = new Location(world, fX + loc.getX(), fY + loc.getY(), fZ + loc.getZ()).getBlock();
-							//		block.setTypeIdAndData(blocks[index], blockData[index], false);
-							//		p.playEffect(block.getLocation(), Effect.MOBSPAWNER_FLAMES, 15);
-							//	}
-							//},i * x + i * y + i * z);
-					int index = fY * width * length + fZ * width + fX;
-					Block block = new Location(world, fX + loc.getX(), fY + loc.getY(), fZ + loc.getZ()).getBlock();
-					block.setTypeIdAndData(blocks[index], blockData[index], false);
+						Bukkit.getScheduler().scheduleSyncDelayedTask(Bukkit.getPluginManager().getPlugin("AdvancedBasev2"),new Runnable(){
+							@SuppressWarnings("deprecation")
+							public void run(){
+								int index = fY * width * length + fZ * width + fX;
+								Block block = new Location(world, fX + loc.getX(), fY + loc.getY(), fZ + loc.getZ()).getBlock();
+								block.setTypeIdAndData(blocks[index], blockData[index], false);
+								p.playEffect(block.getLocation(), Effect.ZOMBIE_CHEW_WOODEN_DOOR, 15);
+							}
+						},i * x + i * y + i * z);
+						Bukkit.getScheduler().scheduleSyncDelayedTask(Bukkit.getPluginManager().getPlugin("AdvancedBasev2"), new Runnable()
+						{
+							public void run() {
+								p.playEffect(p.getLocation(), Effect.RECORD_PLAY, 15);
+							}
+						}, i * length + i * width + i * height);
+					//int index = fY * width * length + fZ * width + fX;
+					//Block block = new Location(world, fX + loc.getX(), fY + loc.getY(), fZ + loc.getZ()).getBlock();
+					//block.setTypeIdAndData(blocks[index], blockData[index], false);
 
 				}
 			}
@@ -195,8 +215,7 @@ public class Schematic {
                 }
             }
         }
-
-		return new Schematic(blocks, blockData, width, length, height);
+		return new Schematic(blocks, blockData, width, length, height, file.getName().toLowerCase().replace(".schematic", ""));
 	}
 	
 	/**

@@ -98,14 +98,5 @@ public class Cuboid {
 		int height = Integer.parseInt(args1[4].replace("]", ""));
 		return new Cuboid(loc.getBlock(), length, width, height);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

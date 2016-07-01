@@ -1,17 +1,20 @@
 package me.savant.base;
 
 import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+
 import me.savant.cuboid.Cuboid;
 import me.savant.util.Config;
 import me.savant.util.Database;
 import me.savant.util.Item;
 import me.savant.util.Name;
+import me.savant.util.Tier;
 
 public class Tag {
 	
@@ -27,6 +30,11 @@ public class Tag {
 	public Cuboid getCuboid()
 	{
 		return region;
+	}
+	
+	public List<String> getModifiers()
+	{
+		return modifiers;
 	}
 	
 	public Tag(Cuboid region, List<String> modifiers)
@@ -64,7 +72,8 @@ public class Tag {
 	
 	public void Break(Player breaker)
 	{
-		Location origin = region.getOrigin().getLocation();
+		Item.giveResources(breaker, Tier.getTier(modifiers));
+		final Location origin = region.getOrigin().getLocation();
 		for(int x = 0; x < region.getLength(); x++)
 		{
 			final int x1 = x;
@@ -74,11 +83,22 @@ public class Tag {
 				for(int z = 0; z < region.getWidth(); z++)
 				{
 					final int z1 = z;
-					new Location(region.getWorld(), x1 + origin.getX(), y1 + origin.getY(), z1 + origin.getZ()).getBlock().setType(Material.AIR);;
+					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
+					{
+						public void run()
+						{
+							Block block = new Location(getCuboid().getWorld(), x1 + origin.getX(), y1 + origin.getY(), z1 + origin.getZ()).getBlock();
+							block.setType(Material.AIR);
+							for(Player p : Bukkit.getOnlinePlayers())
+							{
+								p.playEffect(block.getLocation(), Effect.EXTINGUISH, 15);
+							}
+						}
+					}, 1 * x + 1 * y + 1 * z);
 				}
 			}
 		}
-		Item.giveItem(breaker, Name.getRawName(this));
+//		Item.giveItem(breaker, Name.getRawName(modifiers));
 		empty();
 	}
 	
@@ -106,7 +126,7 @@ public class Tag {
 								p.playEffect(block.getLocation(), Effect.STEP_SOUND, 15);
 							}
 						}
-					}, 5 * x + 5 * y + 5 * z);
+					}, 1 * x + 1 * y + 1 * z);
 				}
 			}
 		}

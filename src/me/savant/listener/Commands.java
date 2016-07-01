@@ -1,7 +1,9 @@
 package me.savant.listener;
 
+import me.savant.util.Chat;
 import me.savant.util.Database;
 import me.savant.util.Item;
+import me.savant.util.Upgrade;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,6 +19,38 @@ public class Commands implements CommandExecutor {
 	{
 		if(sender instanceof ConsoleCommandSender)
 		{
+			if(cmd.getName().equalsIgnoreCase("upgrade"))
+			{
+				Player p = (Player) sender;
+				if(args.length == 1)
+				{
+					p.getInventory().addItem(Upgrade.getEmeraldStack(1));
+					p.sendMessage(ChatColor.GRAY + "Given!");
+					return true;
+				}
+				if(args.length == 2)
+				{
+					if(args[0].equalsIgnoreCase("upgrade") || args[0].equalsIgnoreCase("emerald"))
+					{
+						int i = 0;
+						try
+						{
+							i = Integer.parseInt(args[1]);
+							p.sendMessage(ChatColor.GRAY + "Given!");
+							p.getInventory().addItem(Upgrade.getEmeraldStack(i));
+							return true;
+						}
+						catch (NumberFormatException e)
+						{
+							p.sendMessage(Chat.def + "Error " + Chat.red + "Invalid" + Chat.def + " number");
+							return true;
+						}
+					}
+					return true;
+				}
+				p.sendMessage(Chat.def + "/upgrade or /upgrade upgrade AMOUNT");
+				return true;
+			}
 			if(cmd.getName().equalsIgnoreCase("part"))
 			{
 				if(args.length == 0)

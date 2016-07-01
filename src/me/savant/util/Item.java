@@ -3,13 +3,26 @@ package me.savant.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.savant.base.UpgradeCost;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class Item {
+public class Item
+{
+	public static void giveResources(Player p, int tier)
+	{
+		UpgradeCost uc = Tier.getCost(tier);
+		ItemStack item = new ItemStack(uc.getType(), uc.getAmount());
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(ChatColor.BLUE + uc.getUnit());
+		item.setItemMeta(meta);
+		p.getInventory().addItem(item);
+	}
+	
 	
 	public static void giveItem(Player p, String name)
 	{
