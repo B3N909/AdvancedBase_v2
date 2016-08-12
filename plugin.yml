@@ -1,15 +1,9 @@
-name: AdvancedBasev2
-version: 1.0
+name: AdvancedBaseAPI
+version: 3.0
 description: Base Creator!
 authors: [_Savant]
 main: me.savant.base.Main
 commands:
-  part:
-    description: Give command for Base Parts!
-    aliases: pt
   base:
     description: Used to Sync the Database with Config!
     aliases: b
-  upgrade:
-    description: Give command for Upgrade Part!
-    aliases: u

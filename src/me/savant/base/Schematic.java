@@ -35,48 +35,62 @@ public class Schematic {
 		this.height = height;
 		this.name = name;
 	}
-
-	/**
-	 * @return the blocks
-	 */
-	public short[] getBlocks() {
+	
+	public short[] getBlocks()
+	{
 		return blocks;
 	}
-
-	/**
-	 * @return the data
-	 */
-	public byte[] getData() {
+	
+	public byte[] getData()
+	{
 		return data;
 	}
 
-	/**
-	 * @return the width
-	 */
-	public short getWidth() {
+	public short getWidth()
+	{
 		return width;
 	}
 
-	/**
-	 * @return the length
-	 */
-	public short getLength() {
+	public short getLength()
+	{
 		return length;
 	}
 
-	/**
-	 * @return the height
-	 */
-	public short getHeight() {
+
+	public short getHeight()
+	{
 		return height;
 	}
-	
-	/**
-	 * @return the name
-	 */
+
 	public String getName()
 	{
 		return name;
+	}
+	
+	/**
+	 * @return if can place at @param origin blacklisting @param origin @param placed
+	 */
+	public boolean canPlaceBoth(Location origin, org.bukkit.Material placed)
+	{
+		origin = Center(origin, length, width);
+		int i = 0;
+		int count = 0;
+		for(int x = (int)origin.getX(); x < (int) origin.getX() + length; x++)
+		{
+			for(int y = (int)origin.getY(); y < (int) origin.getY() + height; y++)
+			{
+				for(int z = (int)origin.getZ(); z < (int) origin.getZ() + width; z++)
+				{
+					Location place = new Location(origin.getWorld(), x, y, z);
+					if(place.getBlock().getType() == org.bukkit.Material.AIR || place.getBlock().getType() == placed || place.getBlock().getType() == origin.getBlock().getType())
+					{
+						count++;
+					}
+					i++;
+				}
+			}
+		}
+		return i == count;
 	}
 	
 	/**

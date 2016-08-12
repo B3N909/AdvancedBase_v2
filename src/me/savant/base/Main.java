@@ -1,14 +1,10 @@
 package me.savant.base;
 
-import me.savant.listener.Break;
-import me.savant.listener.Click;
 import me.savant.listener.Commands;
-import me.savant.listener.Explosion;
-import me.savant.listener.Move;
-import me.savant.listener.Place;
 import me.savant.util.Config;
 import me.savant.util.Database;
 import me.savant.util.Tier;
+import me.savant.util.Util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -17,7 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin
 {
-	public static float version = 2.2f;
+	public static float version = 2.9f;
 	public float Version()
 	{
 		return version;
@@ -27,11 +23,7 @@ public class Main extends JavaPlugin
 	public void onEnable()
 	{
 		pm = Bukkit.getPluginManager();
-		pm.registerEvents(new Place(), this);
-		pm.registerEvents(new Break(), this);
-		pm.registerEvents(new Click(), this);
-		pm.registerEvents(new Explosion(), this);
-		pm.registerEvents(new Move(), this);
+		pm.registerEvents(new Util(), this);
 		
 		getCommand("part").setExecutor(new Commands());
 		getCommand("base").setExecutor(new Commands());
@@ -39,7 +31,6 @@ public class Main extends JavaPlugin
 		Tag.plugin = this;
 		Config.plugin = this;
 		Menu.plugin = this;
-		Click.plugin = this;
 		
 		Config.file = this;
 		Tier.file = this;

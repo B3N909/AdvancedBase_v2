@@ -1,12 +1,12 @@
 package me.savant.base;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import me.savant.util.Database;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -56,7 +56,7 @@ public class Modifier
 	public static Tag getTag(Player p)
 	{
 		@SuppressWarnings("deprecation")
-		Block block = p.getTargetBlock(null, 20);
+		Block block = p.getTargetBlock((HashSet<Byte>)null, 20);
 		if(block != null)
 			for(Tag tag : Database.getTags())
 				if(tag.getCuboid() != null && tag.getCuboid().isInside(block))

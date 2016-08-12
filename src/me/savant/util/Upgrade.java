@@ -2,13 +2,13 @@ package me.savant.util;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import me.savant.base.Modifier;
 import me.savant.base.Schematic;
 import me.savant.base.Tag;
 import me.savant.cuboid.Cuboid;
-import net.minecraft.server.v1_8_R1.Item;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -43,7 +43,7 @@ public class Upgrade
 	 */
 	public static void upgradeAt(Player p, int tier)
 	{
-		Block target = p.getTargetBlock(null, 20);
+		Block target = p.getTargetBlock((HashSet<Byte>)null, 20);
 		Tag tag = Modifier.getTag(target);
 		List<String> modifiers = tag.DownlaodData();
 		Cuboid region = tag.getCuboid();

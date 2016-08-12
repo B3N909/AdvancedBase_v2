@@ -8,9 +8,9 @@ public class Damage {
 	{
 		return Integer.parseInt(Modifier.getSuffix(tag.DownlaodData(), "health"));
 	}
-	public static void takeDamage(Tag tag)
+	public static void takeDamage(Tag tag, int amount)
 	{
-		tag.Upload(Modifier.modify(tag.DownlaodData(), "health", (getDamage(tag) - 100) + ""));
+		tag.Upload(Modifier.modify(tag.DownlaodData(), "health", (getDamage(tag) - amount) + ""));
 		if(getDamage(tag) <= 0)
 		{
 			Tag.Break(tag);
@@ -18,6 +18,6 @@ public class Damage {
 	}
 	public static int getMaxDamage(int tier)
 	{
-		return (tier *  100) + 400;
+		return (tier *  400) + 400;
 	}
 }

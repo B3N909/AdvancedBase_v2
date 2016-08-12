@@ -112,7 +112,7 @@ public class Menu
                     			}
                     			p.updateInventory();
                     			Upgrade.upgradeAt(p, tier);
-                    			p.playSound(p.getLocation(), Sound.ORB_PICKUP, 15, 15);
+                    			p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 15, 15);
                     		}
                     		else
                     		{
@@ -126,7 +126,7 @@ public class Menu
                     }
                     else if(e.getName().equalsIgnoreCase(Chat.def + "Open Clan Menu"))
                     {
-                    	p.playSound(p.getLocation(), Sound.LEVEL_UP, 15, 15);
+                    	p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 15, 15);
                     	e.setWillClose(true);
                     	e.setWillDestroy(true);
                     	Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
@@ -191,24 +191,24 @@ public class Menu
                 		Player newMember = Bukkit.getPlayer(name);
                 		newMember.sendMessage(Chat.red + p.getName() + Chat.def + " has added you to his " + Chat.red + "base");
                 		Modifier.addMember(tag, modifiers, newMember);
-                    	p.playSound(p.getLocation(), Sound.ORB_PICKUP, 15, 15);
+                    	p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 15, 15);
                 	}
                 	else if(lore.equalsIgnoreCase("[Member]"))
                 	{
                 		Player oldMember = Bukkit.getPlayer(name);
                 		oldMember.sendMessage(Chat.red + p.getName() + Chat.def + " removed you from his " + Chat.red + "base");
                 		Modifier.removeMember(tag, modifiers, oldMember);
-                    	p.playSound(p.getLocation(), Sound.ORB_PICKUP, 15, 15);
+                    	p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 15, 15);
                 	}
                 	else if(lore.equalsIgnoreCase("[Owner]"))
                 	{
                 		p.sendMessage(Chat.def + "Cannot remove the Owner");
-                    	p.playSound(p.getLocation(), Sound.CLICK, 15, 15);
+                    	p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 15, 15);
                 	}
                 	else
                 	{
                 		p.sendMessage(Chat.def + "Contact " + Chat.red + "_Savant " + Chat.def + "this is a error!");
-                    	p.playSound(p.getLocation(), Sound.CLICK, 15, 15);
+                    	p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 15, 15);
                 	}
             	}
             }
@@ -325,6 +325,10 @@ public class Menu
 	
 	public static ItemStack getTierMenuItem(List<String> modifiers, int tier)
 	{
+		if(Tier.getTierIcon(tier).getType() == Material.AIR)
+		{
+			System.out.println("[AdvancedBasev2] Tier item set to air, change to glass if not defined.");
+		}
 		if(Tier.getTierIcon(tier).getType() == Material.GLASS)
 		{
 			ItemStack item = new ItemStack(Material.GLASS, 1);

@@ -15,7 +15,7 @@ public class Tier
 	
 	public static ItemStack getTierIcon(int tier)
 	{
-		if(file.getConfig().getString("tier." + tier) == "")
+		if(file.getConfig().getString("tier." + tier) == "" || file.getConfig().getString("tier." + tier) == null)
 			file.getConfig().set("tier." + tier, String.valueOf("STONE"));
 		Material material = Material.getMaterial(file.getConfig().getString("tier." + tier));
 		ItemStack item = new ItemStack(material, 1);
